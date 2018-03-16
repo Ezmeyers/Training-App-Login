@@ -6,6 +6,7 @@ package edu.iupui.soic.biohealth.plhi.mhbs.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import org.hisp.dhis.android.sdk.network.Credentials;
+import org.w3c.dom.DOMConfiguration;
 
 import java.util.List;
 

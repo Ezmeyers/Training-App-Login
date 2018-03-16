@@ -102,4 +102,13 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
         return args;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (DocumentResources.CURRENTLY_DOWNLOADING) {
+
+        }else{
+            super.onBackPressed();
+        }
+    }
+
 }
