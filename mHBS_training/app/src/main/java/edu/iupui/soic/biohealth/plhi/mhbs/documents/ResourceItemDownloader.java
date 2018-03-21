@@ -63,7 +63,6 @@ public class ResourceItemDownloader {
         Log.d("Test", "try to download");
         registerReceiver();
         // if item is already downloaded to device, leave
-        //TODO: just a note this will never  run the first time an item is clicked
         if (rdUtil.checkDirForDownloads(downloadId)) {
             Log.d("Test", "exists");
             Intent intent = new Intent(ACTION_ALREADY_DOWNLOADED);

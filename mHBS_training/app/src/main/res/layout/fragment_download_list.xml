@@ -14,4 +14,13 @@
 
         />
 
+    <LinearLayout
+        android:id="@+id/downloadList_fragment_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+
 </FrameLayout>

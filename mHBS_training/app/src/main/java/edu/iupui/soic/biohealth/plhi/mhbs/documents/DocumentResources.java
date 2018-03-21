@@ -32,6 +32,7 @@ public class DocumentResources extends AsyncTask<String, String, List<DocumentRe
     // url for downloading documents from DHIS2 Web API
     private final String URL = "https://mhbs.info/api/documents";
     // List of IDs associated with a resource parsed from /api/documents
+    //TODO change to better solution from public static, Currently downloadlistfragment using
     public static List resourcesFound = new ArrayList<>();
     // holders for auth credentials to access API
     private static String password;

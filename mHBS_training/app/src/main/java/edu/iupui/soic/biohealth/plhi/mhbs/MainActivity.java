@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +38,7 @@ import edu.iupui.soic.biohealth.plhi.mhbs.activities.ResourcesActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.activities.SearchActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.activities.SettingsActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.fragments.DownloadListFragment;
+import edu.iupui.soic.biohealth.plhi.mhbs.fragments.VideoDetailsFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CompoundButton.OnCheckedChangeListener, DownloadListFragment.OnFragmentInteractionListener {
@@ -108,11 +111,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        Log.d("Test", "onback");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       /* if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        }
+        */
+
+        /* allows going back from nested child fragments
+        / video/pdfs played in the downloader list, note: only works for 1 child fragment nesting
+        */
+        FragmentManager fm = getSupportFragmentManager();
+        for (Fragment frag : fm.getFragments()) {
+            if (frag.isVisible()) {
+                FragmentManager childFm = frag.getChildFragmentManager();
+                if (childFm.getBackStackEntryCount() > 0) {
+                    childFm.popBackStack();
+                    return;
+                }
+            }
+        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -264,13 +285,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onFragmentInteraction(boolean status) {
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.downloadListProgressBar);
-        if(!status){
+    public void onDownloadStatus(boolean status) {
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.downloadListProgressBar);
+        if (!status) {
             progressBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String id, String file) {
+        VideoDetailsFragment videoFragment = new VideoDetailsFragment();
+        Bundle b = new Bundle();
+        b.putString("resourceDir", file);
+        b.putString("itemToDownload", id);
+        videoFragment.setArguments(b);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container_fragment_frame,new VideoDetailsFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     /*
@@ -281,4 +316,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.onPostResume();
     }
     */
+
 }

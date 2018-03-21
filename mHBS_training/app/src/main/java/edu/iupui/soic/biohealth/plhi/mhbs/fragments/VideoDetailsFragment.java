@@ -33,6 +33,7 @@ public class VideoDetailsFragment extends Fragment {
         if (getArguments() != null) {
             videoPath = getArguments().getString("resourceDir");
             itemToDownload = getArguments().getString("itemToDownload");
+            Log.d("Test", itemToDownload  + " " + videoPath);
         }
 
     }
@@ -79,6 +80,7 @@ public class VideoDetailsFragment extends Fragment {
             this.openVideo = new File(internalFile + "/" + itemToDownload + ".webm");
         } else {
             File myFile = new File(Environment.getExternalStorageDirectory().getPath() + videoPath + "/" + itemToDownload + ".webm");
+            Log.d("Test", "FILE " + myFile.toString());
             openVideo = myFile;
         }
         // note if we try to call video here, the onCreateView hasn't been created yet
