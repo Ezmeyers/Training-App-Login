@@ -144,11 +144,12 @@ public class DownloadListFragment extends Fragment implements DocumentResources.
                 Fragment videoFrag = new VideoDetailsFragment();
                 String url = resourceOnDevice.getFile();
                 String id = resourceOnDevice.getId();
-                if(url.contains("webm")){
-                    Log.d("Test", "contains web m");
-                }else{
-                    Log.d("Test","doesn't contain"+ url.toString());
-                }
+
+                if(id.contains(".webm"))
+
+                Log.d("Test", url + " THIS IS THE URL ");
+                Log.d("Test", id + " THIS IS THE ID ");
+                Log.d("Test", ids.get(position) + "THIS IS THE POS");
 
                 Bundle b = new Bundle();
                 b.putString("itemToDownload", ids.get(position));

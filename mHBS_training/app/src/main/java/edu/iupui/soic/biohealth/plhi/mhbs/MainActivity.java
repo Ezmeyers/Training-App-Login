@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         / video/pdfs played in the downloader list, note: only works for 1 child fragment nesting
         */
         FragmentManager fm = getSupportFragmentManager();
+        if(fm.getFragments()!=null){
         for (Fragment frag : fm.getFragments()) {
             if (frag.isVisible()) {
                 FragmentManager childFm = frag.getChildFragmentManager();
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return;
                 }
             }
+        }
         }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
