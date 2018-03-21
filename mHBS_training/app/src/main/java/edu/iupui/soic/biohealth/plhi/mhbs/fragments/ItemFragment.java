@@ -103,6 +103,7 @@ public class ItemFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(ResourceItem item);
         void onFragmentComplete();
+        void onDownloadButtonClick(ResourceItem item, boolean status);
     }
 
     public void setOutput(List<DocumentResources.ResourceItem> output){

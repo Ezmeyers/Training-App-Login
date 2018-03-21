@@ -80,7 +80,7 @@
         android:gravity="right"
         android:orientation="vertical">
 
-        <ToggleButton
+        <!--ToggleButton
             android:id="@+id/btn_favorites"
             style="@style/AppTheme"
             android:layout_width="30dp"
@@ -95,15 +95,16 @@
             android:textOff="@null"
             android:backgroundTint="@color/white"
             android:textOn="@null"
-            android:textSize="0sp" />
+            android:textSize="0sp" /-->
 
-        <ImageView
-            android:layout_width="fill_parent"
+        <ImageButton
+            android:id="@+id/btn_download_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
+            android:tint="@color/grey"
+            android:tintMode="@color/black"
             app:srcCompat="@drawable/ic_download_addition" />
+
 
     </TableRow>
 

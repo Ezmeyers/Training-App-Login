@@ -5,13 +5,11 @@
 package edu.iupui.soic.biohealth.plhi.mhbs;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,7 +31,6 @@ import android.widget.Toast;
 import org.hisp.dhis.android.sdk.controllers.metadata.MetaDataController;
 import org.hisp.dhis.android.sdk.persistence.models.UserAccount;
 
-import edu.iupui.soic.biohealth.plhi.mhbs.activities.FavoritesActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.activities.ResourcesActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.activities.SearchActivity;
 import edu.iupui.soic.biohealth.plhi.mhbs.activities.SettingsActivity;
@@ -52,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Log.d("Test", "create");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -154,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 setItemsVisibility(menu, searchItem, false);
-                //TODO: remove after testing
-                Log.d("Test", "not visible");
             }
 
 
@@ -165,8 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onClose() {
                 setItemsVisibility(menu, searchItem, true);
-                //TODO: remove after testing
-                Log.d("Test", "visible");
                 return false;
             }
         });
@@ -176,8 +168,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
-        Log.d("Test", "setItemsVis");
-
         for (int i = 0; i < menu.size(); ++i) {
             MenuItem item = menu.getItem(i);
             if (item != exception) item.setVisible(visible);
@@ -210,11 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_favorites) {
-            Intent intent = new Intent(this, FavoritesActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_download) {
+        if (id == R.id.nav_download) {
             getSupportFragmentManager().beginTransaction().add(R.id.main_fragment_container,new DownloadListFragment()).addToBackStack(null).commit();
         } else if (id == R.id.nav_information) {
             Intent intent = new Intent(this, SearchActivity.class);
@@ -272,7 +258,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // when each button is clicked, we call the program portal activity and display program options per resource chosen
     public void callProgramPortal(String resourceType) {
-        Log.d("Test", resourceType);
         Intent intent = new Intent(this, ResourcesActivity.class);
         intent.putExtra(getString(R.string.resourceKey), resourceType);
         startActivity(intent);
@@ -280,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onResume(){
-        Log.d("Test", "resuming");
         super.onResume();
     }
 
