@@ -369,10 +369,12 @@ public class DocumentResources extends AsyncTask<String, String, List<DocumentRe
         // reset flags
         CURRENTLY_DOWNLOADING = false;
         isResources = false;
-        // set video thumbnails
+        //TODO: uncomment for set video thumbnails
+      /*
         for (int j = 0; j < videoFrame.size(); j++) {
             VIDEO_RESOURCES.get(j).setBitmap(videoFrame.get(j));
-        }
+
+        }*/
         delegate.processFinish(items);
 
     }

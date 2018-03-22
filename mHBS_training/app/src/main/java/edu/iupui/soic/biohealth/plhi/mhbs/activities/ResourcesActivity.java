@@ -34,10 +34,10 @@ import edu.iupui.soic.biohealth.plhi.mhbs.fragments.ItemFragment;
 import edu.iupui.soic.biohealth.plhi.mhbs.fragments.PdfDetailsFragment;
 import edu.iupui.soic.biohealth.plhi.mhbs.fragments.VideoDetailsFragment;
 
-public class ResourcesActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener, DocumentResources.AsyncResponse, ResourceItemDownloader.DownloadResponse {
+public class ResourcesActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener, DocumentResources.AsyncResponse, ResourceItemDownloader.DownloadResponse, VideoDetailsFragment.videoInterface{
     private String ACTIVITY = "";
     private ImageButton btn_program;
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL = 1;
     // may need to be cleared
     private ItemFragment itemFragment;
     private ProgressBar progressBar;
@@ -51,7 +51,7 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
 
         //TODO: this is temporary to display course fragment for programmer testing
         ACTIVITY = getIntent().getStringExtra("resourceKey");
-        if (ACTIVITY.equals("Courses")) {
+        if (ACTIVITY.equals(getString(R.string.courses))) {
             beginCourse();
         } else {
             setupUI();
@@ -74,6 +74,9 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
 
     // set up ui
     private void setupUI() {
+        if (ACTIVITY.equals(getString(R.string.videos))) {
+            setActionBarTitle(getString(R.string.videoAppTitle));
+        }
         addListenerOnButton();
 
         // set the action bar to implement going back
@@ -119,6 +122,8 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
     // on itemClick, we can attempt to download the requested content
     @Override
     public void onListFragmentInteraction(DocumentResources.ResourceItem item) {
+        // set title of pane to video
+        setActionBarTitle(item.title);
         // if we can download
         if (checkRunTimePermissions()) {
             progressBar.setVisibility(View.VISIBLE);
@@ -145,10 +150,13 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
     public void onDownloadButtonClick(DocumentResources.ResourceItem item, boolean status) {
         //flag to only download but not display content
         downloadOnly = status;
-        Log.d("Test", " "+ downloadOnly);
         onListFragmentInteraction(item);
     }
 
+    //handles title changes from child fragments
+    public void changeTitle(String title) {
+            setActionBarTitle(title);
+    }
 
     // TODO: redo following android documentation
     private boolean checkRunTimePermissions() {
@@ -170,7 +178,6 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
 
     @Override
     public void onBackPressed() {
-        //TODO : if doc resources never run dont block
         if (DocumentResources.CURRENTLY_DOWNLOADING) {
             //block from backpress
         } else {
@@ -195,6 +202,21 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
         }
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void onResume(){
+        // on resume, make sure we change the title
+        if(ACTIVITY.equals(getString(R.string.videos))){
+            setActionBarTitle(getString(R.string.videoAppTitle));
+        }
+        else{
+            setActionBarTitle(getString(R.string.title_activity_main));
+        }
+        super.onResume();
+    }
 
     // return from downloading list content for Item fragment
     @Override
@@ -202,16 +224,16 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
         progressBar.setVisibility(View.INVISIBLE);
         // start item fragment with list as bundle
 
-            if (getItemFragment() == null) {
-                setItemFragment(new ItemFragment());
-                getItemFragment().setOutput(output);
-            }
+        if (getItemFragment() == null) {
+            setItemFragment(new ItemFragment());
+            getItemFragment().setOutput(output);
+        }
 
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.res_fragment_container, getItemFragment())
-                    .addToBackStack(null)
-                    .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.res_fragment_container, getItemFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     public Credentials getCredentials() {
@@ -229,36 +251,38 @@ public class ResourcesActivity extends AppCompatActivity implements ItemFragment
         progressBar.setVisibility(View.INVISIBLE);
 
         // flag for case we only clicked download button
-       if(!downloadOnly) {
-           btn_program.setClickable(true);
-           Fragment contentFragment;
-           if (ACTIVITY.equals("Videos")) {
-               contentFragment = new VideoDetailsFragment();
-           } else {
-               contentFragment = new PdfDetailsFragment();
-           }
+        if (!downloadOnly) {
+            btn_program.setClickable(true);
+            Fragment contentFragment;
+            if (ACTIVITY.equals("Videos")) {
+                contentFragment = new VideoDetailsFragment();
+            } else {
+                contentFragment = new PdfDetailsFragment();
+            }
 
 
-           Bundle b = new Bundle();
-           b.putString("resourceDir", fileName);
-           b.putString("itemToDownload", itemToDownload);
-           contentFragment.setArguments(b);
+            Bundle b = new Bundle();
+            b.putString("resourceDir", fileName);
+            b.putString("itemToDownload", itemToDownload);
+            contentFragment.setArguments(b);
 
-           // now we can start our desired fragment.
-           getSupportFragmentManager()
-                   .beginTransaction()
-                   .add(R.id.content_fragment_container, contentFragment)
-                   .addToBackStack(null)
-                   .commit();
-       }else{
-           //TODO: if item already downloaded, hide button ?
-         View view = findViewById(R.id.res_fragment_container);
-         Snackbar mySnackbar = Snackbar.make(view, "successfully downloaded", Snackbar.LENGTH_SHORT);
-         mySnackbar.show();
-       }
-       // reset download button flag
+            // now we can start our desired fragment.
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.content_fragment_container, contentFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            //TODO: if item already downloaded, provide some other action, such as
+            // item was already downloaded or hide the download button
+            View view = findViewById(R.id.res_fragment_container);
+            Snackbar mySnackbar = Snackbar.make(view, getString(R.string.successfulDownload), Snackbar.LENGTH_SHORT);
+            mySnackbar.show();
+        }
+        // reset download button flag
         downloadOnly = false;
 
-            // wait for callback setResourceStatus() to remove progressbar after download
+        // wait for callback setResourceStatus() to remove progressbar after download
     }
+
 }

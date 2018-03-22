@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ public class DownloadListFragment extends Fragment implements DocumentResources.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         rdUtil = new ResourceItemDownloaderUtil();
         rdUtil.resourceFinder(this.getContext());
 
@@ -48,6 +48,7 @@ public class DownloadListFragment extends Fragment implements DocumentResources.
         View rootView = inflater.inflate(R.layout.fragment_download_list, container, false);
         listview = (ListView) rootView.findViewById(R.id.downloadListView);
         ResourceItemDownloaderUtil.ResourceOnDevice resourceOnDevice;
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Downloaded Content");
 
         for(int i=0;i<ResourceItemDownloaderUtil.allDownloads.size();i++){
             resourceOnDevice = ResourceItemDownloaderUtil.allDownloads.get(i);
@@ -109,6 +110,8 @@ public class DownloadListFragment extends Fragment implements DocumentResources.
     @Override
     public void onDetach() {
         super.onDetach();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.title_activity_main));
+
         mListener = null;
     }
 

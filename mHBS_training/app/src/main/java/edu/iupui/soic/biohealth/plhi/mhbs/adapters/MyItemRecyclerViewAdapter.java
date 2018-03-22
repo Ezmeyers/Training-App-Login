@@ -72,7 +72,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         @Override
             public void onClick(View v){
             if(null!=mListener){
-                Log.d("Test", "Clicked");
                 mListener.onDownloadButtonClick(holder.mItem,true);
             }
         }

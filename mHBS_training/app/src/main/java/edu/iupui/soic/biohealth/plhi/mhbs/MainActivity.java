@@ -108,28 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-       /* if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        }
-        */
-
-        /* allows going back from nested child fragments
-        / video/pdfs played in the downloader list, note: only works for 1 child fragment nesting
-        */
-        FragmentManager fm = getSupportFragmentManager();
-        if(fm.getFragments()!=null){
-        for (Fragment frag : fm.getFragments()) {
-            if (frag.isVisible()) {
-                FragmentManager childFm = frag.getChildFragmentManager();
-                if (childFm.getBackStackEntryCount() > 0) {
-                    childFm.popBackStack();
-                    return;
-                }
-            }
-        }
-        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
         }
         else {
             super.onBackPressed();
@@ -230,8 +213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void shortToastMessage(String s) {
-        Log.d("Test", "toast");
-
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
@@ -244,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void startCourses(View view) {
         callProgramPortal(view.getTag().toString());
-        Log.d("Test", view.getTag().toString());
     }
 
     @Override
